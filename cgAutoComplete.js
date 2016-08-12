@@ -15,7 +15,8 @@ app.factory("AutoCompleteService", ["$http", function ($http) {
 
 app.directive("cgAutocomplete", ["AutoCompleteService", function (AutoCompleteService) {
     return {
-        //restrict: "A",  
+        //restrict: "A",
+        require: 'ngModel',
         link: function (scope, elem, attr, ctrl) {
             elem.autocomplete({
                 source: function (searchTerm, response) {
@@ -29,8 +30,8 @@ app.directive("cgAutocomplete", ["AutoCompleteService", function (AutoCompleteSe
                     $(this).val(ui.item.label);
                 },
                 select: function (event, selectedItem) {
-                    scopeval = $(this);
-                    scope[scopeval] = selectedItem.item.label;   
+                    ctrl.$setViewValue(selectedItem.item.label);
+                    ctrl.$render();
                     scope.$apply();
                     event.preventDefault();
                 }
